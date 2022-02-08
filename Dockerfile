@@ -1,11 +1,11 @@
-FROM openjdk:8-jre
+FROM eclipse-temurin:11-jre-alpine
 
 MAINTAINER Cam Saul <cam@metabase.com>
 
 WORKDIR /spark
 
-ENV SPARK_VERSION 2.1.1
-ENV HADOOP_VERSION 2.7
+ENV SPARK_VERSION 3.2.1
+ENV HADOOP_VERSION 3.2
 
 ENV SPARK_ARCHIVE spark-${SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz
 
@@ -24,7 +24,7 @@ ENTRYPOINT java \
  org.apache.spark.deploy.SparkSubmit \
  --master local[8] \
  --conf spark.executor.extraJavaOptions=-Duser.timezone=Etc/UTC \
- --conf spark.cores.max=1 \
+ --conf spark.eventLog.enabled=false \
  --class org.apache.spark.sql.hive.thriftserver.HiveThriftServer2 \
  --name "Thrift JDBC/ODBC Server" \
  --executor-memory 512m \
